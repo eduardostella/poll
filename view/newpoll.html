@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				jQuery('#ajax_form').submit(function(){
+					//var frm = $(this).serialize();
+					var opcoes = document.getElementsByName("options");
+					var dados = { poll_description:document.getElementById("poll_description").value, options: [''] };
+					for (x=0;x<opcoes.length;x++)
+						dados.options[x]=opcoes[x].value;
+					dados = JSON.stringify(dados);
+					jQuery.ajax({
+						type: "POST",
+						url: "poll",
+						data: {'vote':dados},
+						success: function( data ) {
+							alert( data );
+						},
+						error: function( data ) {
+							alert( "erro: " + data );
+						}
+					});
+				
+					return false;
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			function adiciona()
+			{	
+				var qt = document.getElementsByName("options").length + 1;
+				var dv = document.getElementById("divOpcoes");
+				var lb = document.createElement("label");
+				lb.id = "lblOpcao" + qt;
+				var sp = document.createElement("span");
+				sp.innerText="Opção " + qt + ": ";
+				lb.appendChild(sp);
+				var ip = document.createElement("input");
+				ip.type = "text";
+				ip.name = "options";
+				ip.id = "options";
+				ip.value = "Opção " + qt;
+				lb.appendChild(ip);
+				var br = document.createElement("br");
+				dv.appendChild(br);
+				dv.appendChild(lb);
+			}
+		</script>
+	</head>
+	<body>
+		<h1>Teste de criação de enquete</h1>
+		<hr />
+		<form method="post" action="" id="ajax_form">
+			<label>Descrição da enquete: <input type="text" id="poll_description" name="poll_description" value="" /></label>
+			<br /><br />
+			<div id="divOpcoes">
+				<label>Opção 1: <input type="text" id="options" name="options" value="Opção 1" /></label>
+			</div>
+			<a href="javascript: adiciona();">Adicionar opção</a>
+			<hr />
+			<label><input type="submit" name="enviar" value="Enviar" /></label>
+		</form>
+	</body>
+</html>

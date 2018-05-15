@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>Lista de enquetes disponíveis</title>
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	</head>
+	<body>
+		<form>
+			<h1>Enquetes disponíveis</h1>
+			<table id="saida" border="0">
+				<thead>
+					<th>Id</th>
+					<th>Descrição</th>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</form>
+		<script type="text/javascript">
+			window.onload = function() {
+				$.ajax( {
+					url: "polls",
+					dataType: 'json'
+				}).done(function(data) {
+					var $tbody = $("#saida > tbody" );
+					$tbody.empty();
+					for (i=0;i<data.length;i++) {							
+						var ln = document.createElement("tr");
+						var c1 = document.createElement("td");
+						var a1 = document.createElement("a");
+						a1.href = "testpoll/".concat(data[i].Id);
+						a1.innerText = "Ir";
+						c1.appendChild(a1);
+						var c2 = document.createElement("td");
+						c2.innerText = data[i].Description;
+						ln.appendChild(c1);
+						ln.appendChild(c2);
+						$tbody.append(ln);
+					}
+				});
+			}
+		</script>
+	</body>
+</html>
